@@ -34,3 +34,43 @@ def IG_calc(data, feature):
     IG = E_beforesplit - E_eff
     #print(IG)
     return IG
+
+
+# DT - Classifier
+import numpy as np
+from sklearn.tree import DecisionTreeClassifier, plot_tree
+import graphviz
+import matplotlib.pyplot as plt
+
+X = np.matrix('2 3;1 5;5 1;6 2;4 4').reshape(-1, 2).A
+y = np.array([0,0,0,1,1])
+
+tree = DecisionTreeClassifier(criterion='entropy')  
+tree.fit(X, y)
+
+plt.figure(figsize=(10, 6))
+plot_tree(tree, 
+          feature_names=['$x_1$', '$x_2$'], 
+          class_names=['Class 0', 'Class 1'], 
+          filled=True, 
+          rounded=True)
+plt.show()
+
+# DT - Regressor
+import numpy as np
+from sklearn.tree import DecisionTreeRegressor, plot_tree
+import matplotlib.pyplot as plt
+
+X = np.array([[2, 3], [1, 5], [5, 1], [6, 2], [4, 4]])
+y = np.array([0.1, 0.2, 0.3, 0.7, 0.9])
+
+tree = DecisionTreeRegressor(criterion='squared_error')
+tree.fit(X, y)
+
+plt.figure(figsize=(10, 6))
+plot_tree(tree, 
+          feature_names=['$x_1$', '$x_2$'], 
+          filled=True, 
+          rounded=True)
+plt.show()
+
