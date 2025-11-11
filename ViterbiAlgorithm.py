@@ -1,10 +1,13 @@
-def viterbi(T,E,p,s):
-    h = []
-    p_c = p.copy()
-    v_c = np.multiply(p_c,E[:,s[0]])
-    h.append(np.argmax(v_c))
+def viterbi(T, E, p, s):
+    v = p * E[:, s[0]]
+    psi = []
     for i in s[1:]:
-        t_c = np.multiply((T*E[:,i]).T,v_c)
-        v_c = np.array([np.max(j) for j in t_c])
-        h.append(np.argmax(v_c))
+        scores = v[:, None] * T
+        psi.append(np.argmax(scores, axis=0))
+        v = np.max(scores, axis=0) * E[:, i]
+
+    h = [0 for i in range(len(s))]
+    h[-1] = np.argmax(v)
+    for t in range(len(psi)-1, -1, -1):
+        h[t] = psi[t][h[t+1]]
     return h
